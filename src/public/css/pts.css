@@ -1,0 +1,28 @@
+.bg-42 { background-color: rgb(42,42,42) }
+.bg-72 { background-color: rgb(72,72,72) }
+.bg-75 { background-color: rgb(75,75,75) }
+.bg-84 { background-color: rgb(84,84,84) }
+
+.tc-0 { color: #000 }
+.tc-1 { color: #111 }
+.tc-2 { color: #222 }
+.tc-3 { color: #333 }
+.tc-4 { color: #444 }
+.tc-5 { color: #555 }
+.tc-6 { color: #666 }
+.tc-7 { color: #777 }
+.tc-8 { color: #888 }
+.tc-9 { color: #999 }
+.tc-a { color: #aaa }
+.tc-b { color: #bbb }
+.tc-c { color: #ccc }
+.tc-d { color: #ddd }
+.tc-e { color: #eee }
+.tc-f { color: #fff }
+
+/*border*/
+.border { border: 1px solid #313131 }
+.border-l { border-left: 1px solid #313131 }
+.border-t { border-top: 1px solid #313131 }
+.border-r { border-right: 1px solid #313131 }
+.border-b { border-bottom: 1px solid #313131 }
