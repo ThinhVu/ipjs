@@ -9,8 +9,8 @@ export default class Glitch {
     const glitches = []
     let row = 0
     while(row < height) {
-      const glitchHeight = Math.min(Math.floor(Math.random() * 10 + 1), height - row)
-      const distance = Math.floor(Math.random() * 10)
+      const glitchHeight = Math.min(Math.floor(Math.random() * 8 + 1), height - row)
+      const distance = Math.floor(Math.random() * 20)
       const direction = Math.round(Math.random()) > 0 ? 'left' : 'right'
       glitches.push({
         rows: { start: row, end: row + glitchHeight },
