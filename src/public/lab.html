@@ -23,6 +23,7 @@
   import GaussianBlur from './modules/ipjs/effects/gaussian-blur.js';
   import Tiktok from './modules/ipjs/effects/tiktok.js';
   import Histogram from './modules/ipjs/statistics/histogram.js';
+  import Glitch from './modules/ipjs/effects/glitch.js';
   
   window.onload = function() {
     const image = document.getElementById("src")
@@ -46,10 +47,11 @@
     // ipjs.add(new Additive(Channel.B, -30))
     // ipjs.add(new GrayScale())
     // ipjs.add(new BlackWhite(128));
-    // ipjs.add(new WhiteNoise(20))
+    // ipjs.add(new WhiteNoise(10))
     // ipjs.add(new Mosaic({ x: 300, y: 300, width: 200, height: 200}, 10))
-    // ipjs.add(new GaussianBlur(10))
-    ipjs.add(new Tiktok(3))
+    ipjs.add(new GaussianBlur(2))
+    // ipjs.add(new Tiktok(3))
+    // ipjs.add(new Glitch())
     ipjs.process(pixmap)
   }
 </script>
