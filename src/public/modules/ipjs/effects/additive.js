@@ -31,9 +31,9 @@ export default class Additive {
       [Channel.G]: (px, v) => px.g += v,
       [Channel.B]: (px, v) => px.b += v,
       [Channel.RGB]: (px, v) => {
-        px.r += this._value;
-        px.g += this._value;
-        px.b += this._value;
+        px.r += v;
+        px.g += v;
+        px.b += v;
       }
     }
 
