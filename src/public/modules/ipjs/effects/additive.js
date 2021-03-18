@@ -1,16 +1,23 @@
 import Channel from '../common/channel.js';
 
 /**
+ * @interface AdditiveConfig
+ */
+
+/**
+ * @field {Channel} AdditiveConfig#channel
+ * @field {Number} value
+ */
+
+/**
  * @implements iEffect
  */
 export default class Additive {
   /**
-   * @param {Channel} channel
-   * @param {Number} value
+   * @param {Array<AdditiveConfig>} cfg
    */
-  constructor(channel, value) {
-    this._channel = channel
-    this._value = value
+  constructor(cfg) {
+    this._cfg = cfg
   }
 
   /**
@@ -19,11 +26,11 @@ export default class Additive {
    */
   apply(img) {
     const fx = {
-      [Channel.A]: (px) => px.a += this._value,
-      [Channel.R]: (px) => px.r += this._value,
-      [Channel.G]: (px) => px.g += this._value,
-      [Channel.B]: (px) => px.b += this._value,
-      [Channel.RGB]: (px) => {
+      [Channel.A]: (px, v) => px.a += v,
+      [Channel.R]: (px, v) => px.r += v,
+      [Channel.G]: (px, v) => px.g += v,
+      [Channel.B]: (px, v) => px.b += v,
+      [Channel.RGB]: (px, v) => {
         px.r += this._value;
         px.g += this._value;
         px.b += this._value;
@@ -32,7 +39,9 @@ export default class Additive {
 
     for(let col = 0; col < img.width; col++) {
       for(let row = 0; row < img.height; row++) {
-        fx[this._channel](img.px(row, col))
+        for(let {channel, value} of this._cfg) {
+          fx[channel](img.px(row, col), value)
+        }
       }
     }
   }
