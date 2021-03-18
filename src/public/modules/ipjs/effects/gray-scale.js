@@ -1,3 +1,5 @@
+export const getGayScale = (px) => Math.floor(0.299 * px.r + 0.587 * px.g + 0.114 * px.b)
+
 /***
  * @implements iEffect
  */
@@ -10,7 +12,7 @@ export default class GrayScale {
     for(let row = 0; row < h; row ++) {
       for (let col = 0; col < w; col ++) {
         px = img.px(row, col)
-        grayscale = Math.floor(0.299 * px.r + 0.587 * px.g + 0.114 * px.b);
+        grayscale = getGayScale(px);
         px.r = grayscale
         px.g = grayscale
         px.b = grayscale

@@ -42,13 +42,13 @@
     // const histogram = new Histogram(pixmap)
     
     const ipjs = new IPJs()
-    ipjs.add(new Additive([
-      { channel: Channel.R, value: 30 },
-      { channel: Channel.G, value: 30 },
-      { channel: Channel.B, value: -30 },
-    ]))
+    // ipjs.add(new Additive([
+    //   { channel: Channel.R, value: 30 },
+    //   { channel: Channel.G, value: 30 },
+    //   { channel: Channel.B, value: -30 },
+    // ]))
     // ipjs.add(new GrayScale())
-    // ipjs.add(new BlackWhite(128));
+    ipjs.add(new BlackWhite(128));
     // ipjs.add(new WhiteNoise(10))
     // ipjs.add(new Mosaic({ x: 300, y: 300, width: 200, height: 200}, 10))
     // ipjs.add(new GaussianBlur(2))
