@@ -1,4 +1,4 @@
-import Channel from '../common/channel.js'
+const colorIndex = { r: 0, g: 1, b: 2, a: 3 }
 
 /**
  * @class
@@ -32,25 +32,23 @@ export default class Pixmap {
     }
   }
 
-  /**
-   * Get pixel at provided position
-   * @param {Number} row
-   * @param {Number} col
-   * @return {Pixel}
-   */
   px(row, col) {
     // TODO: increase performance
     return this.pxI(row * this._width + col)
   }
 
   pxI(i) {
-    let pixel = {}
+    let t = this
     const redBytePosition = (i * 4 /*bpp*/)
-    Object.defineProperty(pixel, 'r', this._createSetGetForColorChannelAt(redBytePosition + Channel.R))
-    Object.defineProperty(pixel, 'g', this._createSetGetForColorChannelAt(redBytePosition + Channel.G))
-    Object.defineProperty(pixel, 'b', this._createSetGetForColorChannelAt(redBytePosition + Channel.B))
-    Object.defineProperty(pixel, 'a', this._createSetGetForColorChannelAt(redBytePosition + Channel.A))
-    return pixel
+    return new Proxy({}, {
+      get: (target, p) => {
+        return t._data[redBytePosition + colorIndex[p]]
+      },
+      set: (target, p, value) => {
+        t._data[redBytePosition + colorIndex[p]] = Math.min(Math.max(value, 0), 255)
+        return true
+      }
+    })
   }
 
   get width() {
