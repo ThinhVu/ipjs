@@ -1,4 +1,7 @@
 export default class Histogram {
+  red = []
+  green = []
+  blue = []
   /**
    * @param {Pixmap} img
    */
