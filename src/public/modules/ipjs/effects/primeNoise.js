@@ -9,16 +9,10 @@ for(let prime of primeNumbers) {
  */
 export default class PrimeNoise {
   apply(img) {
-    let px
-    let w = img.width
-    let h = img.height
-    for(let row = 0; row < h; ++row) {
-      for (let col = 0; col < w; ++col) {
-        px = img.px(row, col)
-        if (isPrime[px.r]) px.r = 255
-        if (isPrime[px.g]) px.g = 255
-        if (isPrime[px.b]) px.b = 255
-      }
-    }
+    img.each(px => {
+      if (isPrime[px.r]) px.r = 255
+      if (isPrime[px.g]) px.g = 255
+      if (isPrime[px.b]) px.b = 255
+    })
   }
 }

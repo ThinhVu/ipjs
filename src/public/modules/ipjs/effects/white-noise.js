@@ -19,17 +19,13 @@ export default class WhiteNoise {
     let w = img.width
     let h = img.height
     this._initNoise(w * h)
-    let px
-    for(let row=0; row < h; ++row) {
-      for (let col=0; col < w; ++col) {
-        if (this._shouldMakeNoise()) {
-          px = img.px(row, col)
-          px.r = Math.max(px.r + 30, 255)
-          px.g = Math.max(px.g + 30, 255)
-          px.b = Math.max(px.b + 30, 255)
-        }
+    img.each(px => {
+      if (this._shouldMakeNoise()) {
+        px.r = Math.max(px.r, 255)
+        px.g = Math.max(px.g, 255)
+        px.b = Math.max(px.b, 255)
       }
-    }
+    })
   }
 
   _initNoise(pixel) {

@@ -36,13 +36,6 @@ export default class Additive {
         px.b += v;
       }
     }
-
-    for(let col = 0; col < img.width; col++) {
-      for(let row = 0; row < img.height; row++) {
-        for(let {channel, value} of this._cfg) {
-          fx[channel](img.px(row, col), value)
-        }
-      }
-    }
+    img.each(px => this._cfg.forEach(({channel, value}) => fx[channel](px, value)))
   }
 }

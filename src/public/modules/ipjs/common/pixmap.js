@@ -51,6 +51,14 @@ export default class Pixmap {
     })
   }
 
+  each(handlePx) {
+    for(let row=0; row<this._height; ++row) {
+      for (let col=0; col<this._width; ++col) {
+        handlePx(this.px(row, col))
+      }
+    }
+  }
+
   get width() {
     return this._width
   }
