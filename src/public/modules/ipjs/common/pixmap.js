@@ -6,37 +6,43 @@ const colorIndex = { r: 0, g: 1, b: 2, a: 3 }
 export default class Pixmap {
   /**
    * Convert img element to pixmap
-   * @param {ImageData} imgData
+   * @param {ImageData | HTMLImageElement} img
    */
-  constructor(imgData) {
+  constructor(img) {
+    let imgData
+    if (img instanceof HTMLImageElement) {
+      let canvas = document.createElement('canvas')
+      let ctx = canvas.getContext("2d")
+      let w = canvas.width = img.width
+      let h = canvas.height = img.height
+      ctx.drawImage(img, 0, 0)
+      imgData = ctx.getImageData(0, 0, w, h)
+      ctx = null
+      canvas = null
+    } else if (img instanceof ImageData) {
+      imgData = img
+    }
     this._width = imgData.width
     this._height = imgData.height
     this._data = imgData.data
+    this.imageData = imgData
   }
 
   /**
-   * @param {Number} dataIndex
-   * @return {{set: set, get: (function(): number)}}
-   * @private
+   * Get pixel at row, col
+   * @param {Number} rowIndex
+   * @param {Number} colIndex
+   * @return {Proxy<Pixel>}
    */
-  _createSetGetForColorChannelAt(dataIndex) {
-    return {
-      get: () => this._data[dataIndex],
-      set: v => {
-        if (v < 0)
-          v = 0
-        if (v > 255)
-          v = 255
-        this._data[dataIndex] = v
-      },
-    }
+  px(rowIndex, colIndex) {
+    return this.pxI(rowIndex * this._width + colIndex)
   }
 
-  px(row, col) {
-    // TODO: increase performance
-    return this.pxI(row * this._width + col)
-  }
-
+  /**
+   * Get Pixel at position i
+   * @param {Number} i index of pixel in 1-dimension array
+   * @return {Proxy<Pixel>}
+   */
   pxI(i) {
     let t = this
     const redBytePosition = (i * 4 /*bpp*/)
@@ -51,6 +57,10 @@ export default class Pixmap {
     })
   }
 
+  /**
+   * Loop through all pixels the execute handlePixel function for this pixel
+   * @param {Function} handlePx
+   */
   each(handlePx) {
     for(let row=0; row<this._height; ++row) {
       for (let col=0; col<this._width; ++col) {
@@ -59,10 +69,18 @@ export default class Pixmap {
     }
   }
 
+  /**
+   * Return image width
+   * @return {Number}
+   */
   get width() {
     return this._width
   }
 
+  /**
+   * return image height
+   * @return {Number}
+   */
   get height() {
     return this._height
   }

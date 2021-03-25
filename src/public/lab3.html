@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lab</title>
+  <link rel="stylesheet" type="text/css" href="../../lib/css/vu.css">
+</head>
+<body>
+<div>
+  <img id="src1" width="500" height="500" alt="" src="./assets/windows_xp_bliss-wide.jpg"/>
+  <img id="src2" width="500" height="500" alt="" src="./assets/she.jpg"/>
+  <canvas id="canvas" width="500" height="500" style="border: 1px solid red"></canvas>
+</div>
+<script type="module">
+  import Pixmap from './modules/ipjs/common/pixmap.js';
+  import Normal from './modules/ipjs/blends/normal/normal.js';
+  import Multiply from './modules/ipjs/blends/multiply/multiply.js';
+
+  window.onload = function() {
+    const image1 = new Pixmap(document.getElementById("src1"))
+    const image2 = new Pixmap(document.getElementById("src2"))
+    const blend = new Multiply()
+    blend.blend(image1, image2)
+    const canvas = document.getElementById('canvas')
+    const ctx = canvas.getContext("2d")
+    const imgData = ctx.getImageData(0, 0, 500, 500)
+    const data1 = imgData.data
+    const data2 = image1.imageData.data
+    for(let i=0; i<data1.length; ++i) {
+      data1[i] = data2[i]
+    }
+    ctx.putImageData(imgData, 0, 0)
+  }
+</script>
+</body>
+</html>
