@@ -14,12 +14,13 @@
 <script type="module">
   import Pixmap from './modules/ipjs/common/pixmap.js';
   import Normal from './modules/ipjs/blends/normal/normal.js';
+  import Dissolve from './modules/ipjs/blends/dissolve/dissolve.js';
   import Multiply from './modules/ipjs/blends/multiply/multiply.js';
 
   window.onload = function() {
     const image1 = new Pixmap(document.getElementById("src1"))
     const image2 = new Pixmap(document.getElementById("src2"))
-    const blend = new Multiply()
+    const blend = new Dissolve()
     blend.blend(image1, image2)
     const canvas = document.getElementById('canvas')
     const ctx = canvas.getContext("2d")
