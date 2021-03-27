@@ -6,7 +6,7 @@ const colorIndex = { r: 0, g: 1, b: 2, a: 3 }
 export default class Pixmap {
   /**
    * Convert img element to pixmap
-   * @param {ImageData | HTMLImageElement} img
+   * @param {HTMLElement} img
    */
   constructor(img) {
     let imgData
@@ -25,7 +25,6 @@ export default class Pixmap {
     this._width = imgData.width
     this._height = imgData.height
     this._data = imgData.data
-    this.imageData = imgData
   }
 
   /**

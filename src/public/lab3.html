@@ -7,29 +7,28 @@
 </head>
 <body>
 <div>
-  <img id="src1" width="500" height="500" alt="" src="./assets/windows_xp_bliss-wide.jpg"/>
+  <img id="bg" width="500" height="500" alt="" src="./assets/windows_xp_bliss-wide.jpg"/>
   <img id="src2" width="500" height="500" alt="" src="./assets/she.jpg"/>
   <canvas id="canvas" width="500" height="500" style="border: 1px solid red"></canvas>
 </div>
 <script type="module">
   import Pixmap from './modules/ipjs/common/pixmap.js';
+  import BaseBlend from './modules/ipjs/blends/BaseBlend.js';
   import Normal from './modules/ipjs/blends/normal/normal.js';
   import Dissolve from './modules/ipjs/blends/dissolve/dissolve.js';
-  import Multiply from './modules/ipjs/blends/multiply/multiply.js';
-
+  import Darken from './modules/ipjs/blends/darken/darken.js';
+  import Multiply from './modules/ipjs/blends/darken/multiply.js';
   window.onload = function() {
-    const image1 = new Pixmap(document.getElementById("src1"))
-    const image2 = new Pixmap(document.getElementById("src2"))
-    const blend = new Dissolve()
-    blend.blend(image1, image2)
     const canvas = document.getElementById('canvas')
     const ctx = canvas.getContext("2d")
     const imgData = ctx.getImageData(0, 0, 500, 500)
-    const data1 = imgData.data
-    const data2 = image1.imageData.data
-    for(let i=0; i<data1.length; ++i) {
-      data1[i] = data2[i]
-    }
+    const output = new Pixmap(imgData)
+    
+    const image1 = new Pixmap(document.getElementById("bg"))
+    const image2 = new Pixmap(document.getElementById("src2"))
+    const blend = new BaseBlend('phoenix')
+    blend.blend(image1, image2, output, 1)
+    
     ctx.putImageData(imgData, 0, 0)
   }
 </script>
