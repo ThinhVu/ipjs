@@ -13,11 +13,7 @@
 </div>
 <script type="module">
   import Pixmap from './modules/ipjs/common/pixmap.js';
-  import BaseBlend from './modules/ipjs/blends/BaseBlend.js';
-  import Normal from './modules/ipjs/blends/normal/normal.js';
-  import Dissolve from './modules/ipjs/blends/dissolve/dissolve.js';
-  import Darken from './modules/ipjs/blends/darken/darken.js';
-  import Multiply from './modules/ipjs/blends/darken/multiply.js';
+  import Blender from './modules/ipjs/blends/Blender.js';
   window.onload = function() {
     const canvas = document.getElementById('canvas')
     const ctx = canvas.getContext("2d")
@@ -26,8 +22,9 @@
     
     const image1 = new Pixmap(document.getElementById("bg"))
     const image2 = new Pixmap(document.getElementById("src2"))
-    const blend = new BaseBlend('phoenix')
-    blend.blend(image1, image2, output, 1)
+    
+    const blender = new Blender('overlay')
+    blender.blend(image1, image2, output, 1)
     
     ctx.putImageData(imgData, 0, 0)
   }

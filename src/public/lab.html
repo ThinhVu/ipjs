@@ -7,7 +7,7 @@
 </head>
 <body>
 <div class="flex-col">
-  <img id="src" alt="" src="./assets/windows_xp_bliss-wide.jpg"/>
+  <img id="src" alt="" width="500" height="500" src="./assets/windows_xp_bliss-wide.jpg"/>
   <canvas id="canvas"></canvas>
 </div>
 <script type="module">
@@ -24,6 +24,7 @@
   import Tiktok from './modules/ipjs/effects/tiktok.js';
   import Histogram from './modules/ipjs/statistics/histogram.js';
   import Glitch from './modules/ipjs/effects/glitch.js';
+  import Divide from './modules/ipjs/effects/divide.js';
   import PrimeNoise from './modules/ipjs/effects/primeNoise.js';
   
   window.onload = function() {
@@ -51,13 +52,13 @@
     // ipjs.add(new Additive([
     //   { channel: Channel.RGB, value: -80 },
     // ]))
-    // ipjs.add(new GrayScale())
+    ipjs.add(new GrayScale())
     // ipjs.add(new BlackWhite(128));
     // ipjs.add(new WhiteNoise(50))
     // ipjs.add(new Mosaic({ x: 300, y: 300, width: 200, height: 200}, 10))
     // ipjs.add(new GaussianBlur(2))
     // ipjs.add(new Tiktok(3))
-    ipjs.add(new Glitch())
+    ipjs.add(new Divide())
     // ipjs.add(new PrimeNoise())
     ipjs.process(pixmap)
   }
