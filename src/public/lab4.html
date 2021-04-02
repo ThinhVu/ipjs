@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lab</title>
+  <link rel="stylesheet" type="text/css" href="../../lib/css/vu.css">
+</head>
+<body>
+<div>
+  <img id="bg" width="500" height="500" alt="" src="./assets/windows_xp_bliss-wide.jpg"/>
+  <img id="src2" width="500" height="500" alt="" src="./assets/she.jpg"/>
+  <canvas id="canvas" width="500" height="500" style="border: 1px solid red"></canvas>
+</div>
+<script type="module">
+  import transition from './modules/ipjs/transitions/Transition.js'
+  window.onload = function() {
+    const canvas = document.getElementById('canvas')
+    const ctx = canvas.getContext("2d")
+    const image1 = (document.getElementById("bg"))
+    const image2 = (document.getElementById("src2"))
+    transition(image1, image2, ctx, '', {})
+  }
+</script>
+</body>
+</html>
