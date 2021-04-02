@@ -1,7 +1,7 @@
 import IPJs from '../index.js';
 import GaussianBlur from '../effects/gaussian-blur.js';
 import Pixmap from '../common/pixmap.js';
-
+// https://motionarray.com/browse/after-effects-templates/transitions
 export default function transition(preImg, nextImg, ctx, effect, config) {
   const w = preImg.width
   const h = preImg.height
@@ -30,7 +30,7 @@ export default function transition(preImg, nextImg, ctx, effect, config) {
     ctx.restore()
     ctx.save()
     if (radius <= w * Math.sqrt(2)) {
-      setTimeout(anim, 1000)
+      setTimeout(anim, 24)
     }
   }
 
