@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Photoshop</title>
+  <link rel="stylesheet" type="text/css" href="../../lib/css/vu.css">
+  <link rel="stylesheet" type="text/css" href="./css/pts.css">
+  <link rel="stylesheet" type="text/css" href="./css/index.css">
+</head>
+<body style="margin: 0">
+<script type="module" src="./modules/index.js"></script>
+<section id="app" class="flex-col">
+  <section id="menu-bar" class="flex-row bg-75 tc-c border-b">
+    <div id="file-btn">File</div>
+    <div>Edit</div>
+    <div>Image</div>
+    <div>Layer</div>
+    <div>Type</div>
+    <div>Select</div>
+    <div>Filter</div>
+    <div>3D</div>
+    <div>View</div>
+    <div>View</div>
+    <div>Window</div>
+    <div>Help</div>
+  </section>
+  <section class="flex-row bg-75 tc-c border-b toolbar">
+    <div onclick="loadImages()">Open</div>
+    <div onclick="loadImages()">Open</div>
+    <div onclick="loadImages()">Open</div>
+  </section>
+  <section id="main" class="flex-row flex-1 pos-rel">
+    <section id="toolbar" style="display: grid; grid-template-columns: 1fr 1fr; width: 100px; background-color: green;"></section>
+    <section class="editor" style="flex: 1; background-color: #444; display: flex; flex-direction: column; position: relative">
+      <section class="editor-tab flex-row bg-75 tc-c border-b" style="width: 100%; max-width: 100%; overflow-x: scroll;">
+        <div>Image 1 <span>x</span></div>
+        <div>Image 2 <span>x</span></div>
+        <div>Image 3 <span>x</span></div>
+        <div>Image 4 <span>x</span></div>
+      </section>
+      <section class="editor-content" style="flex: 1; display: flex; align-items: center; justify-content: center">
+        <canvas id="canvas" style="width: 500px; height: 300px; border: 1px solid #000; background-color: #FFF"></canvas>
+      </section>
+    </section>
+    <section id="toolbar-2" style="display: flex; flex-direction: column; width: 300px; background-color: red;"></section>
+  </section>
+</section>
+
+<div id="status-bar" style="height: 25px; display: flex; background-color: pink">
+  <div>...</div>
+  <div style="flex: 1"></div>
+  <div>.....</div>
+</div>
+</body>
+</html>
