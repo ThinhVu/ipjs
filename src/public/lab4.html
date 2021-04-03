@@ -3,14 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <title>Lab</title>
-  <link rel="stylesheet" type="text/css" href="../../lib/css/vu.css">
 </head>
-<body>
+<body style="background-color: #444">
 <div>
-  <img id="bg" width="500" height="500" alt="" src="./assets/windows_xp_bliss-wide.jpg"/>
-<!--  <img id="blurSrc" width="500" height="500" alt="" src="./assets/she.jpg"/>-->
-  <img id="src2" width="500" height="500" alt="" src="./assets/she.jpg"/>
-  <div id="container" style="position: relative; border: 1px solid red; ">
+  <img id="bg" width="500" height="500" alt="" src="./assets/windows_xp_bliss-wide.jpg" style="display: none"/>
+  <img id="src2" width="500" height="500" alt="" src="./assets/she.jpg" style="display: none"/>
+  <div id="container" style="position: relative;">
     <canvas id="base" width="500" height="500" style="position: absolute; top: 0; left: 0; z-index: 0"></canvas>
     <canvas id="blur" width="500" height="500" style="position: absolute; top: 0; left: 0; z-index: 1"></canvas>
     <canvas id="canvas" width="500" height="500" style="position: absolute; top: 0; left: 0; z-index: 2;"></canvas>

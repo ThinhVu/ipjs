@@ -49,7 +49,7 @@ export default async function transition(preImg, nextImg, baseCanvas, blurCanvas
     return path
   }
 
-  const duration = 5000;
+  const duration = 2000;
   const fps = 30;
 
   const msPerStep = 1000 / fps;
@@ -57,12 +57,16 @@ export default async function transition(preImg, nextImg, baseCanvas, blurCanvas
   const totalStep = duration / msPerStep;
   let currentStep = 0
   let radius = 0;
+
+  console.log('duration: ', duration)
+  console.log('fps: ', fps)
+  console.log('total step: ', totalStep)
+
   function anim() {
     currentStep++
     ctx.save()
     blurCtx.save()
     radius = Math.round(maxRadius * easeInOutQuart(currentStep/totalStep))
-    console.log(radius)
     blurCtx.clip(makePath(radius, 2), "nonzero")
     blurCtx.drawImage(blurImg, 0, 0)
     ctx.clip(makePath(radius, 1), "nonzero")
