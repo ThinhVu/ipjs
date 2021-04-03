@@ -1,3 +1,5 @@
+// https://motionarray.com/after-effects-templates/modern-slide-transitions-746045
+
 import IPJs from '../index.js';
 import GaussianBlur from '../effects/gaussian-blur.js';
 import Pixmap from '../common/pixmap.js';
