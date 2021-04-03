@@ -6,26 +6,29 @@
 </head>
 <body style="background-color: #444">
 <div>
-  <div id="container" style="position: relative; width: 500px; height: 500px;">
-  </div>
+  <div id="container" style="position: relative; width: 500px; height: 500px;"></div>
 </div>
 <script type="module">
   import Transition from './modules/ipjs/transitions/Transition.js'
   import ModernSlide from './modules/ipjs/transitions/modern-slide.js'
   window.onload =  async function() {
-    const imageSources = [
-      './assets/windows_xp_bliss-wide.jpg',
-      './assets/she.jpg',
-      './assets/2.jpg',
-      './assets/3.jpg'
-    ]
-    const cfg = {
+    await Transition({
+      imageSources: [
+        './assets/windows_xp_bliss-wide.jpg',
+        './assets/she.jpg',
+        './assets/2.jpg',
+        './assets/3.jpg'
+      ],
       container: 'container',
-      transition: ModernSlide,
-      duration: 5000,
-      fps: 60
-    }
-    await Transition(imageSources, cfg)
+      loop: true,
+      stayDuration: 2000,
+      transition: new ModernSlide({
+        transitionDuration: 2000,
+        fps: 60,
+        easing: 'easeOutQuint',
+        origin: { x: 0, y: 500 }
+      }),
+    })
   }
 </script>
 </body>
