@@ -23,7 +23,6 @@ function makeImage(img, customImage) {
     outImg.src = c.toDataURL("image/bmp")
   })
 }
-
 function makeGradientImg(img) {
   return makeImage(img, (ctx, w, h) => {
     const gradient = ctx.createLinearGradient(0,h, w, 0);
@@ -33,7 +32,6 @@ function makeGradientImg(img) {
     ctx.fillRect(0, 0, w, h);
   })
 }
-
 function makeBlurImage(img) {
   return makeImage(img, (ctx, w, h) => {
     ctx.scale(2,2)
@@ -44,29 +42,23 @@ function makeBlurImage(img) {
   })
 }
 
-let baseCanvas, gradientCanvas, blurCanvas, canvas
-let baseCtx, gradientCtx, blurCtx, ctx
-
-function initCanvas(container, zIndex) {
+const layers = [null /*current image*/, null /*gradient color*/, null /*gaussianblur*/, null/*next image*/]
+layers.eachCtx = action => [1,2,3].forEach(i => action(layers[i].ctx)) // cause we only animate layer 1,2,3.
+function createLayer(container, index) {
   const c = document.createElement('canvas')
   c.width = container.clientWidth
   c.height = container.clientHeight
-  c.style = `position: absolute; top: 0; left: 0; z-index: ${zIndex};`
+  c.style = `position: absolute; top: 0; left: 0; z-index: ${index};`
   container.append(c)
-  return [c, c.getContext("2d")]
+  return {
+    canvas: c,
+    ctx: c.getContext("2d")
+  }
 }
-function initCanvasIfNeeded(container, w, h) {
-  if (baseCanvas == null)
-    [baseCanvas, baseCtx] = initCanvas(container, w, h, 0)
-
-  if (gradientCanvas == null)
-    [gradientCanvas, gradientCtx] = initCanvas(container, w, h, 1)
-
-  if (blurCanvas == null)
-    [blurCanvas, blurCtx] = initCanvas(container, w, h, 2)
-
-  if (canvas == null)
-    [canvas, ctx] = initCanvas(container, w, h, 3)
+function initLayersIfNeeded(container, w, h) {
+  for(let i=0; i<4; ++i)
+    if (!layers[i])
+      layers[i] = createLayer(container, w, h, i)
 }
 
 // https://motionarray.com/browse/after-effects-templates/transitions
@@ -82,7 +74,7 @@ export default class ModernSlide {
     const _t = this
     const w = container.clientWidth
     const h = container.clientHeight
-    initCanvasIfNeeded(container)
+    initLayersIfNeeded(container)
 
     const gradientImg = await makeGradientImg(nextImg);
     const blurImg = await makeBlurImage(nextImg);
@@ -109,26 +101,22 @@ export default class ModernSlide {
     return new Promise(resolve => {
       function anim() {
         currentStep++
-        ctx.save()
-        blurCtx.save()
-        gradientCtx.save()
+        layers.eachCtx(ctx => ctx.save())
 
         gradientRadius = Math.round(maxRadius * easing[_t.easing](Math.min(currentStep, totalStep)/totalStep))
-        gradientCtx.clip(makePath(gradientRadius), "nonzero")
-        gradientCtx.drawImage(gradientImg, 0, 0)
+        layers[1].ctx.clip(makePath(gradientRadius), "nonzero")
+        layers[1].ctx.drawImage(gradientImg, 0, 0)
 
         blurRadius = Math.round(maxRadius * easing[_t.easing](Math.max(currentStep - 10, 0)/totalStep))
-        blurCtx.clip(makePath(blurRadius), "evenodd")
-        blurCtx.drawImage(blurImg, 0, 0)
+        layers[2].ctx.clip(makePath(blurRadius), "evenodd")
+        layers[2].ctx.drawImage(blurImg, 0, 0)
 
         radius = Math.round(maxRadius * easing[_t.easing](Math.max(currentStep - 20, 0)/totalStep))
-        ctx.clip(makePath(radius), "evenodd")
-        ctx.drawImage(nextImg, 0, 0)
+        layers[3].ctx.clip(makePath(radius), "evenodd")
+        layers[3].ctx.drawImage(nextImg, 0, 0)
 
         // remove clip
-        ctx.restore()
-        blurCtx.restore()
-        gradientCtx.restore()
+        layers.eachCtx(ctx => ctx.restore())
 
         if (currentStep < totalStep) {
           setTimeout(anim, msPerStep)
@@ -137,10 +125,8 @@ export default class ModernSlide {
         }
       }
 
-      baseCtx.drawImage(preImg, 0, 0)
-      gradientCtx.clearRect(0,0,w,h)
-      blurCtx.clearRect(0,0,w,h);
-      ctx.clearRect(0,0,w,h);
+      layers[0].ctx.drawImage(preImg, 0, 0)
+      layers.eachCtx(ctx => ctx.clearRect(0,0,w,h))
       anim()
     })
   }
