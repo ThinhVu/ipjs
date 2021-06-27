@@ -26,8 +26,8 @@ function makeImage(img, customImage) {
 function makeGradientImg(img) {
   return makeImage(img, (ctx, w, h) => {
     const gradient = ctx.createLinearGradient(0,h, w, 0);
-    gradient.addColorStop(0, '#efff05');
-    gradient.addColorStop(1, '#a5fe98');
+    gradient.addColorStop(0, '#2669B7');
+    gradient.addColorStop(1, '#98B5FE');
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, w, h);
   })
@@ -80,13 +80,29 @@ export default class ModernSlide {
     const blurImg = await makeBlurImage(nextImg);
 
     // Draw the ellipse
-    function makePath(radius) {
-      const path = new Path2D()
-      path.ellipse(_t.origin.x, _t.origin.y, radius, radius, 0, 0, 2 * Math.PI);
-      path.lineTo(_t.origin.x, _t.origin.y)
-      path.closePath()
-      return path
-    }
+    const makePaths = [
+      (radius) => {
+        const path = new Path2D()
+        path.ellipse(_t.origin.x, _t.origin.y, radius, radius, 0, 0, 2 * Math.PI);
+        path.lineTo(_t.origin.x, _t.origin.y)
+        path.closePath()
+        return path
+      },
+      (radius) => {
+        const path = new Path2D()
+        const xyRatio = w/h
+        let y = Math.sqrt(Math.pow(radius, 2) / (Math.pow(xyRatio, 2) + 1))
+        const x = xyRatio * y
+        path.moveTo(0, 0)
+        path.lineTo(0, h)
+        path.lineTo(x, y)
+        path.lineTo(w, 0)
+        path.closePath()
+        return path
+      }
+    ]
+
+    const makePath = makePaths[1]
 
     const msPerStep = 1000 / _t.fps;
     const maxRadius = Math.sqrt(w * w + h * h)
