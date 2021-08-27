@@ -3,30 +3,30 @@ const blendModes = {
   normal: (a, b) => a,
 
   // dissolve
-  dissolve: (a, b) => throw "not implemented",
+  dissolve: (a, b) => {},
 
   // lighten
   lighten: (a, b) => (b > a) ? b : a,
   add: (a, b) => Math.min(255, a + b),
   screen: (a, b) => 255 - (((255 - a) * (255 - b)) >> 8),
-  screenDodge: (a, b) => throw "not impl",
+  screenDodge: (a, b) => {},
   colorDodge: (a, b) => b === 255 ? b : Math.min(255, ((a << 8 ) / (255 - b))),
   linearDodge: (a, b) => blendModes.add(a, b),
-  divideDodge: (a, b) => throw "not impl",
-  lighterColor: (a, b) => throw "not impl",
+  divideDodge: (a, b) => {},
+  lighterColor: (a, b) => {},
 
   // darken
   darken: (a, b) => (b > a) ? a : b,
-  darkerColor: (a, b) => throw "not impl",
+  darkerColor: (a, b) => {},
   multiply: (a, b) => a * b / 255,
-  multiplyBurn: (a, b) => throw "not impl",
+  multiplyBurn: (a, b) => {},
   average: (a, b) => (a + b) / 2,
   colorBurn: (a, b) => b === 0 ? b : Math.max(0, (255 - ((255 - a) << 8 ) / b)),
   linearBurn: (a, b) => blendModes.subtract(a, b),
 
   // comparative #
   difference: (a, b) => Math.abs(a - b),
-  divide: (a, b) => throw "not impl",
+  divide: (a, b) => {},
   exclusion: (a, b) => a + b - 2 * a * b / 255,
   subtract: (a, b) => (a + b < 255) ? 0 : a + b - 255,
 
@@ -40,10 +40,10 @@ const blendModes = {
   hardMix: (a, b) => blendModes.vividLight(a, b) < 128 ? 0 : 255,
 
   // composite
-  color: (a, b) => throw "not impl",
-  hue: (a, b) => throw "not impl",
-  luminosity: (a, b) => throw "not impl",
-  saturation: (a, b) => throw "not impl",
+  color: (a, b) => {},
+  hue: (a, b) => {},
+  luminosity: (a, b) => {},
+  saturation: (a, b) => {},
 
   // un-category
   negation: (a, b) => 255 - Math.abs(255 - a - b),

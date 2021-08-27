@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Image Blend</title>
+  <link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+<body>
+<section data-name="blend">
+  <label for="blend"> Blend mode:
+    <select id="blend">
+      <option value="normal">normal</option>
+<!--      <option value="dissolve">dissolve</option>-->
+      <option value="lighten">lighten</option>
+      <option value="add">add</option>
+      <option value="screen">screen</option>
+<!--      <option value="screenDodge">screenDodge</option>-->
+      <option value="colorDodge">colorDodge</option>
+      <option value="linearDodge">linearDodge</option>
+<!--      <option value="divideDodge">divideDodge</option>-->
+<!--      <option value="lighterColor">lighterColor</option>-->
+      <option value="darken">darken</option>
+<!--      <option value="darkerColor">darkerColor</option>-->
+      <option value="multiply">multiply</option>
+<!--      <option value="multiplyBurn">multiplyBurn</option>-->
+      <option value="average">average</option>
+      <option value="colorBurn">colorBurn</option>
+      <option value="linearBurn">linearBurn</option>
+      <option value="difference">difference</option>
+<!--      <option value="divide">divide</option>-->
+      <option value="exclusion">exclusion</option>
+      <option value="subtract">subtract</option>
+      <option value="overlay">overlay</option>
+      <option value="softLight">softLight</option>
+      <option value="hardLight">hardLight</option>
+      <option value="linearLight">linearLight</option>
+      <option value="pinLight">pinLight</option>
+      <option value="vividLight">vividLight</option>
+      <option value="hardMix">hardMix</option>
+<!--      <option value="color">color</option>-->
+<!--      <option value="hue">hue</option>-->
+<!--      <option value="luminosity">luminosity</option>-->
+<!--      <option value="saturation">saturation</option>-->
+      <option value="negation">negation</option>
+      <option value="reflect">reflect</option>
+      <option value="glow">glow</option>
+      <option value="phoenix">phoenix</option>
+    </select>
+  </label>
+  <label for="opacity">Opacity (%): <input id="opacity" value="50">
+  </label>
+</section>
+<section data-name="apply" class="mb-8">
+  <button id="btn-apply">Apply</button>
+</section>
+<div>
+  <img id="bg" width="500" height="500" alt="" src="../assets/windows_xp_bliss-wide.jpg"/>
+  <img id="src2" width="500" height="500" alt="" src="../assets/she.jpg"/>
+  <canvas id="canvas" width="500" height="500" style="border: 1px solid red"></canvas>
+</div>
+<script type="module">
+  import Pixmap from '../../src/ipjs/common/pixmap.js';
+  import Blender from '../../src/ipjs/blends/Blender.js';
+  
+  window.onload = function() {
+    const canvas = document.getElementById('canvas')
+    const ctx = canvas.getContext("2d")
+    const imgData = ctx.getImageData(0, 0, 500, 500)
+    const output = new Pixmap(imgData)
+    
+    const image1 = new Pixmap(document.getElementById("bg"))
+    const image2 = new Pixmap(document.getElementById("src2"))
+    
+    const blend = document.getElementById('blend')
+    const opacity = document.getElementById('opacity')
+    document.getElementById('btn-apply').onclick = e => {
+      const blender = new Blender(blend.value)
+      blender.blend(image1, image2, output, Number(opacity.value) / 100)
+      ctx.putImageData(imgData, 0, 0)
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lab 2 - Resize - Crop</title>
+  <link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+<body>
+<div>
+  <button id="resizeBtn">Resize</button>
+  <button id="cropBtn">Crop</button>
+  <img id="src" style="display: none" alt="" src="../assets/windows_xp_bliss-wide.jpg"/>
+  <div style="overflow: scroll; background-color: #aaa; display: flex; justify-content: center; align-items: center; min-height: 300px">
+    <canvas id="canvas" style="border: 1px solid red"></canvas>
+  </div>
+</div>
+
+<script type="module">
+  import VuCanvas from '../../src/vu-canvas.js'
+  let vuCanvas = null
+  
+  window.onload = function() {
+    // prepare
+    const image = document.getElementById("src")
+    const canvas = document.getElementById('canvas')
+    canvas.width  = image.width;
+    canvas.height = image.height;
+    const context = canvas.getContext("2d");
+    context.drawImage(image, 0, 0);
+
+    vuCanvas = new VuCanvas(canvas)
+    // register event
+    document.getElementById('resizeBtn').onclick = () => vuCanvas.resize({ left: true, top: true, right: true, bottom: true })
+    document.getElementById('cropBtn').onclick = () => vuCanvas.crop({ left: 50, top: 50, right: 100, bottom: 100 })
+  }
+</script>
+</body>
+</html>

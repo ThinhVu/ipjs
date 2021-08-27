@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lab 1: IPjs - Image Effects</title>
+  <link rel="stylesheet" type="text/css" href="../style.css">
+  <style>
+    .hide {display: none}
+    label {display: flex; align-items: center; justify-content: space-between; width: 160px; margin-bottom: 2px}
+    input {width: 40px}
+  </style>
+</head>
+<body>
+<div>
+  <section data-name="effect" class="mb-4">
+    <label for="effect">Effect</label>
+    <select id="effect">
+      <option value="grayscale">Grayscale</option>
+      <option value="invert">Invert</option>
+      <option value="additive">Additive</option>
+      <option value="black-white">Black White (Bitonal)</option>
+      <option value="mosaic">Mosaic</option>
+      <option value="gaussian-blur">Gaussian blue</option>
+      <option value="tiktok">Tiktok Like</option>
+      <option value="divide">Divide</option>
+      <option value="glitch">Glitch</option>
+      <option value="white-noise">White Noise</option>
+      <option value="prime-noise">Prime noise</option>
+    </select>
+  </section>
+  <section data-name="extra-setting" class="mb-4">
+    <div id="additive" class="hide">
+      <label for="additive-r">R: <input id="additive-r" value="80"></label>
+      <label for="additive-g">G: <input id="additive-g" value="80"></label>
+      <label for="additive-b">B: <input id="additive-b" value="80"></label>
+    </div>
+    <div id="black-white" class="hide">
+      <label for="blackwhite-threshold">Threshold: <input id="blackwhite-threshold" value="128"></label>
+    </div>
+    <div id="mosaic" class="hide">
+      <label for="mosaic-x">X: <input id="mosaic-x" value="0"></label>
+      <label for="mosaic-y">Y: <input id="mosaic-y" value="0"></label>
+      <label for="mosaic-w">Width: <input id="mosaic-w" value="200"></label>
+      <label for="mosaic-h">Height: <input id="mosaic-h" value="200"></label>
+      <label for="mosaic-size">Size: <input id="mosaic-size" value="20"></label>
+    </div>
+    <div id="gaussian-blur" class="hide">
+      <label for="gaussian-blur-level">Blur Level: <input id="gaussian-blur-level" value="10"></label>
+    </div>
+    <div id="tiktok" class="hide">
+      <label for="tiktok-level">Tiktok Level: <input id="tiktok-level" value="10"></label>
+    </div>
+    <div id="white-noise" class="hide">
+      <label for="white-noise-percentage">White Noise Percentage: <input id="white-noise-percentage" value="50"></label>
+    </div>
+  </section>
+  <section data-name="apply" class="mb-8">
+    <button id="btn-apply">Apply</button>
+  </section>
+</div>
+
+<div>
+  <img id="src" alt="" src="../assets/windows_xp_bliss-wide.jpg"/>
+  <canvas id="canvas"></canvas>
+</div>
+<script type="module">
+  import Pixmap from '../../src/ipjs/common/pixmap.js';
+  import IPJs from '../../src/ipjs/index.js';
+  import Channel from '../../src/ipjs/common/channel.js'
+  
+  // effect
+  import GrayScale from '../../src/ipjs/effects/gray-scale.js';
+  import Invert from '../../src/ipjs/effects/invert.js';
+  import Additive from '../../src/ipjs/effects/additive.js';
+  import BlackWhite from '../../src/ipjs/effects/black-white.js';
+  import WhiteNoise from '../../src/ipjs/effects/white-noise.js';
+  import Mosaic from '../../src/ipjs/effects/mosaic.js';
+  import GaussianBlur from '../../src/ipjs/effects/gaussian-blur.js';
+  import Tiktok from '../../src/ipjs/effects/tiktok.js';
+  import Glitch from '../../src/ipjs/effects/glitch.js';
+  import Divide from '../../src/ipjs/effects/divide.js';
+  import PrimeNoise from '../../src/ipjs/effects/primeNoise.js';
+  
+  //
+  import Histogram from '../../src/ipjs/statistics/histogram.js';
+  
+  const _v = (id) => Number(document.getElementById(id).value)
+  
+  const effects = {
+    'grayscale': () => new GrayScale(),
+    'invert': () => new Invert(),
+    'additive': () => new Additive([
+      { channel: Channel.R, value: _v('additive-r') },
+      { channel: Channel.G, value: _v('additive-g') },
+      { channel: Channel.B, value: _v('additive-b') },
+    ]),
+    'black-white': () => new BlackWhite(_v('blackwhite-threshold')),
+    'mosaic': () => new Mosaic({
+          x: _v('mosaic-x'),
+          y: _v('mosaic-y'),
+          width: _v('mosaic-w'),
+          height: _v('mosaic-h')
+        },
+        _v('mosaic-size')),
+    'gaussian-blur': () => new GaussianBlur(_v('gaussian-blur-level')),
+    'tiktok': () => new Tiktok(_v('tiktok-level')),
+    'divide': () => new Divide(),
+    'glitch': () => new Glitch(),
+    'white-noise': () => new WhiteNoise(_v('white-noise-percentage')),
+    'prime-noise': () => new PrimeNoise()
+  }
+  
+  window.onload = function() {
+    const image = document.getElementById("src")
+    const canvas = document.getElementById('canvas')
+    canvas.width = image.width
+    canvas.height = image.height
+    
+    const processImage = (effect) => {
+      const context = canvas.getContext("2d");
+      context.drawImage(image, 0, 0);
+      const imageData = context.getImageData(0, 0, canvas.width, canvas.height)
+      
+      const pixmap = new Pixmap(imageData)
+      const ipjs = new IPJs()
+      ipjs.add(effect)
+      ipjs.process(pixmap)
+
+      context.putImageData(imageData, 0, 0)
+    }
+
+    const select = document.getElementById("effect")
+    document.getElementById("effect").addEventListener('change', (e) => {
+      const effectName = select.value
+      const extraSetting = document.querySelector('section[data-name="extra-setting"]')
+      for(let setting of extraSetting.children) {
+        if (setting.getAttribute('id') === effectName) {
+          setting.classList.remove('hide')
+        } else {
+          setting.classList.add('hide')
+        }
+      }
+    })
+    document.getElementById('btn-apply').onclick = () => processImage(effects[select.value]())
+  }
+</script>
+</body>
+</html>
